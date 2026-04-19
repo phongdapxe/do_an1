@@ -1,14 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\ASUS\\Desktop\\l\u01B0u test btl winform\\WinFormsApp1\\",
+  "WorkspaceRootPath": "C:\\Users\\ASUS\\Desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|c:\\users\\asus\\desktop\\l\u01B0u test btl winform\\winformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|c:\\users\\asus\\desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|c:\\users\\asus\\desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|c:\\users\\asus\\desktop\\l\u01B0u test btl winform\\winformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|c:\\users\\asus\\desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|solutionrelative:appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|c:\\users\\asus\\desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\dichvu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{D4A5AA61-D5E2-133F-C6F5-C1FAED315F32}|WinFormsApp1.csproj|solutionrelative:dichvu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,15 +26,27 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "dichvu.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\dichvu.cs",
+              "RelativeDocumentMoniker": "dichvu.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\dichvu.cs [Design]",
+              "RelativeToolTip": "dichvu.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-19T10:33:53.992Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Form1.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\l\u01B0u test btl winform\\WinFormsApp1\\Form1.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\l\u01B0u test btl winform\\WinFormsApp1\\Form1.cs [Design]",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\Form1.cs [Design]",
               "RelativeToolTip": "Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-15T11:34:45.267Z",
@@ -34,15 +54,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\l\u01B0u test btl winform\\WinFormsApp1\\Form1.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\l\u01B0u test btl winform\\WinFormsApp1\\Form1.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAPUAAAAAAAAAAAAowPsAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAPkBAAAAAAAAAAAYwBoCAABsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-29T15:07:12.468Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "AppDbContext.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\\u0111\u1ED3 ans1 \u002B cnpm\\quannet\\AppDbContext.cs",
+              "RelativeToolTip": "AppDbContext.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAuwCsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-19T10:40:55.144Z",
               "EditorCaption": ""
             }
           ]

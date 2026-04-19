@@ -70,3 +70,54 @@ VALUES
 ('M13', N'Máy số 13', N'Tắt'),
 ('M14', N'Máy số 14', N'Tắt'),
 ('M15', N'Máy số 15', N'Tắt');
+
+
+create table menudichvu (
+	id int IDENTITY(1,1) PRIMARY KEY,
+	tenmon nvarchar(50) not null,
+	dongia int not null default 0,
+	loai nvarchar(20) not null,
+	constraint chk_loai check(loai in (N'nước', N'đồ ăn'))
+);
+
+
+-- insert thêm món tạm thời vào đây
+
+
+create table lichsugoimon(
+	id int identity(1,1) primary key,
+	tenmon nvarchar(100) not null,
+	soluong int not null default 1,
+	dongia int not null default 0,
+	tongtien int not null default 0,
+	thoigian datetime not null default getdate(),
+	somay nchar(10) null,
+	tendangnhap nvarchar(50) null
+);
+
+
+create table lichsunaptien(
+	id_nap int identity(1,1) primary key,
+	tendangnhap nvarchar(50) not null,
+	sotiennap int not null,
+	thoigiannap datetime default getdate(),
+	ghichu nvarchar(200),
+	constraint fk_lichsunap_taikhoan foreign key (tendangnhap)
+		references taikhoan(tendangnhap)
+);
+
+select * from lichsunaptien
+
+
+-- reset trắng thông tin số dư tài khoản
+UPDATE taikhoan
+SET sodu = 0,
+    tongtiennap = 0,
+    tongtiendung = 0;
+
+-- 2. Nếu ku muốn xóa luôn cả lịch sử nạp tiền để đồng bộ dữ liệu
+-- Lưu ý: Lệnh TRUNCATE sẽ xóa sạch toàn bộ dòng trong bảng và reset ID tự tăng về 1
+TRUNCATE TABLE lichsunaptien;
+
+-- 3. Nếu muốn xóa luôn cả lịch sử gọi món (dịch vụ)
+TRUNCATE TABLE lichsugoimon;

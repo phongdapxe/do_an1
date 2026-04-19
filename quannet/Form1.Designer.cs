@@ -48,6 +48,9 @@
             btntaikhoan = new ToolStripButton();
             btnnaptien = new ToolStripButton();
             btntaotaikhoan = new ToolStripButton();
+            btnlsnaptien = new ToolStripButton();
+            btndichvu = new ToolStripButton();
+            btnbaocao = new ToolStripButton();
             tabControl1 = new TabControl();
             tabpage1 = new TabPage();
             tabpage2 = new TabPage();
@@ -66,6 +69,17 @@
             btndanhsach = new Button();
             label1 = new Label();
             btnsearch = new Button();
+            tabPage3 = new TabPage();
+            panel2 = new Panel();
+            label2 = new Label();
+            txtlichsu = new TextBox();
+            btntimkiemls = new Button();
+            btndsls = new Button();
+            dgvlichsunap = new DataGridView();
+            coltendn = new DataGridViewTextBoxColumn();
+            colsotien = new DataGridViewTextBoxColumn();
+            coldatetime = new DataGridViewTextBoxColumn();
+            colghichu = new DataGridViewTextBoxColumn();
             timertinhtien = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)dgvmaytram).BeginInit();
             cmsMayTram.SuspendLayout();
@@ -76,6 +90,9 @@
             ((System.ComponentModel.ISupportInitialize)dgvtaikhoan).BeginInit();
             cmstaikhoan.SuspendLayout();
             panel1.SuspendLayout();
+            tabPage3.SuspendLayout();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvlichsunap).BeginInit();
             SuspendLayout();
             // 
             // dgvmaytram
@@ -92,6 +109,7 @@
             dgvmaytram.TabIndex = 2;
             dgvmaytram.CellContentClick += dgvmaytram_CellContentClick;
             dgvmaytram.CellFormatting += dgvmaytram_CellFormatting;
+            dgvmaytram.RowPostPaint += dgvmaytram_RowPostPaint;
             // 
             // somay
             // 
@@ -176,7 +194,7 @@
             // toolStrip1
             // 
             toolStrip1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btntrangchu, btntaikhoan, btnnaptien, btntaotaikhoan });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btntrangchu, btntaikhoan, btnnaptien, btntaotaikhoan, btnlsnaptien, btndichvu, btnbaocao });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 28);
@@ -223,11 +241,40 @@
             btntaotaikhoan.Text = "Tạo tài khoản";
             btntaotaikhoan.Click += btntaotaikhoan_Click;
             // 
+            // btnlsnaptien
+            // 
+            btnlsnaptien.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnlsnaptien.Image = (Image)resources.GetObject("btnlsnaptien.Image");
+            btnlsnaptien.ImageTransparentColor = Color.Magenta;
+            btnlsnaptien.Name = "btnlsnaptien";
+            btnlsnaptien.Size = new Size(155, 25);
+            btnlsnaptien.Text = "Lịch sử thanh toán";
+            btnlsnaptien.Click += tablsnaptien_Click;
+            // 
+            // btndichvu
+            // 
+            btndichvu.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btndichvu.Image = (Image)resources.GetObject("btndichvu.Image");
+            btndichvu.ImageTransparentColor = Color.Magenta;
+            btndichvu.Name = "btndichvu";
+            btndichvu.Size = new Size(72, 25);
+            btndichvu.Text = "Dịch vụ";
+            // 
+            // btnbaocao
+            // 
+            btnbaocao.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnbaocao.Image = (Image)resources.GetObject("btnbaocao.Image");
+            btnbaocao.ImageTransparentColor = Color.Magenta;
+            btnbaocao.Name = "btnbaocao";
+            btnbaocao.Size = new Size(74, 25);
+            btnbaocao.Text = "Báo cáo";
+            // 
             // tabControl1
             // 
             tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.Controls.Add(tabpage1);
             tabControl1.Controls.Add(tabpage2);
+            tabControl1.Controls.Add(tabPage3);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.ItemSize = new Size(0, 1);
             tabControl1.Location = new Point(0, 28);
@@ -273,6 +320,7 @@
             dgvtaikhoan.Name = "dgvtaikhoan";
             dgvtaikhoan.Size = new Size(786, 360);
             dgvtaikhoan.TabIndex = 0;
+            dgvtaikhoan.RowPostPaint += dgvtaikhoan_RowPostPaint;
             // 
             // cottendn
             // 
@@ -381,6 +429,106 @@
             btnsearch.UseVisualStyleBackColor = true;
             btnsearch.Click += btnsearch_Click;
             // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(panel2);
+            tabPage3.Controls.Add(dgvlichsunap);
+            tabPage3.Location = new Point(4, 5);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(792, 413);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "tabPage3";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = Color.Pink;
+            panel2.Controls.Add(label2);
+            panel2.Controls.Add(txtlichsu);
+            panel2.Controls.Add(btntimkiemls);
+            panel2.Controls.Add(btndsls);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(3, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(786, 50);
+            panel2.TabIndex = 1;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(108, 5);
+            label2.Name = "label2";
+            label2.Size = new Size(54, 15);
+            label2.TabIndex = 5;
+            label2.Text = "tìm kiếm";
+            // 
+            // txtlichsu
+            // 
+            txtlichsu.Location = new Point(81, 24);
+            txtlichsu.Name = "txtlichsu";
+            txtlichsu.Size = new Size(164, 23);
+            txtlichsu.TabIndex = 4;
+            // 
+            // btntimkiemls
+            // 
+            btntimkiemls.Location = new Point(251, 24);
+            btntimkiemls.Name = "btntimkiemls";
+            btntimkiemls.Size = new Size(75, 23);
+            btntimkiemls.TabIndex = 2;
+            btntimkiemls.Text = "tìm kiếm";
+            btntimkiemls.UseVisualStyleBackColor = true;
+            btntimkiemls.Click += btntimkiemls_Click;
+            // 
+            // btndsls
+            // 
+            btndsls.Location = new Point(0, 23);
+            btndsls.Name = "btndsls";
+            btndsls.Size = new Size(75, 23);
+            btndsls.TabIndex = 3;
+            btndsls.Text = "danh sách";
+            btndsls.UseVisualStyleBackColor = true;
+            // 
+            // dgvlichsunap
+            // 
+            dgvlichsunap.BackgroundColor = Color.Pink;
+            dgvlichsunap.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvlichsunap.Columns.AddRange(new DataGridViewColumn[] { coltendn, colsotien, coldatetime, colghichu });
+            dgvlichsunap.Dock = DockStyle.Bottom;
+            dgvlichsunap.Location = new Point(3, 55);
+            dgvlichsunap.Name = "dgvlichsunap";
+            dgvlichsunap.Size = new Size(786, 355);
+            dgvlichsunap.TabIndex = 0;
+            dgvlichsunap.RowPostPaint += dgvlichsunap_RowPostPaint;
+            // 
+            // coltendn
+            // 
+            coltendn.DataPropertyName = "tendangnhap";
+            coltendn.HeaderText = "tên tài khoản";
+            coltendn.Name = "coltendn";
+            coltendn.Width = 184;
+            // 
+            // colsotien
+            // 
+            colsotien.DataPropertyName = "sotiennap";
+            colsotien.HeaderText = "số tiền nạp";
+            colsotien.Name = "colsotien";
+            colsotien.Width = 184;
+            // 
+            // coldatetime
+            // 
+            coldatetime.DataPropertyName = "thoigiannap";
+            coldatetime.HeaderText = "thời gian nạp";
+            coldatetime.Name = "coldatetime";
+            coldatetime.Width = 184;
+            // 
+            // colghichu
+            // 
+            colghichu.DataPropertyName = "ghichu";
+            colghichu.HeaderText = "ghi chú";
+            colghichu.Name = "colghichu";
+            colghichu.Width = 191;
+            // 
             // timertinhtien
             // 
             timertinhtien.Enabled = true;
@@ -409,6 +557,10 @@
             cmstaikhoan.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            tabPage3.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvlichsunap).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -450,5 +602,19 @@
         private DataGridViewTextBoxColumn thoigian;
         private DataGridViewTextBoxColumn dasudung;
         private System.Windows.Forms.Timer timertinhtien;
+        private ToolStripButton btnlsnaptien;
+        private ToolStripButton btndichvu;
+        private TabPage tabPage3;
+        private DataGridView dgvlichsunap;
+        private ToolStripButton btnbaocao;
+        private Panel panel2;
+        private Label label2;
+        private TextBox txtlichsu;
+        private Button btntimkiemls;
+        private Button btndsls;
+        private DataGridViewTextBoxColumn coltendn;
+        private DataGridViewTextBoxColumn colsotien;
+        private DataGridViewTextBoxColumn coldatetime;
+        private DataGridViewTextBoxColumn colghichu;
     }
 }

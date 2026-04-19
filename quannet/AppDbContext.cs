@@ -22,10 +22,31 @@ namespace WinFormsApp1
         [NotMapped]
         public string? thoigianchoi { get; set; }
     }
+    public class lichsunaptien
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Để EF biết ID này tự tăng
+        public int id_nap { get; set; }
+
+        public string tendangnhap { get; set; }
+        public int sotiennap { get; set; }
+        public DateTime thoigiannap { get; set; }
+        public string ghichu { get; set; }
+    }
+    public class LichSuNapView
+    {
+        public int id_nap { get; set; }
+        public string tendangnhap { get; set; }
+        public int sotiennap { get; set; }
+        public DateTime thoigiannap { get; set; }
+        public string ghichu { get; set; }
+        public int tongtiennap { get; set; } // Lấy từ bảng TaiKhoan sang
+    }
     public class AppDbContext : DbContext
     {
         public DbSet<TaiKhoan> taikhoans { get; set; }
         public DbSet<ttMayTram> ttMayTrams { get; set; }
+        public DbSet<lichsunaptien> lichsunaptiens { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlServer("Data Source=LAPTOP-71A4N08C;Initial Catalog=winform;Integrated Security=True;TrustServerCertificate=True");
@@ -43,6 +64,11 @@ namespace WinFormsApp1
                 entity.ToTable("ttMayTram"); 
                 entity.HasKey(t => t.somay);
             });
+                modelBuilder.Entity<lichsunaptien>(entity =>
+                {
+                    entity.ToTable("lichsunaptien"); 
+                    entity.HasKey(t => t.id_nap);
+                });
         }
     }
 }

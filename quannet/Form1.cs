@@ -329,6 +329,11 @@ namespace WinFormsApp1
             {
                 loadtaikhoan();
             }
+
+            else if (tabControl1.SelectedIndex == 2)
+            {
+                loadlichsu();
+            }
         }
 
         private void đổiMậtKhẩuToolStripMenuItem_Click(object sender, EventArgs e)
@@ -426,6 +431,112 @@ namespace WinFormsApp1
         private void dgvmaytram_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        // sự kiên click vào tab lịch sử ra tabpage3 
+        private void tablsnaptien_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 2;
+            loadlichsu();
+
+        }
+
+        public void loadlichsu()
+        {
+            try
+            {
+                using (AppDbContext db_ls = new AppDbContext())
+                {
+                    dgvlichsunap.AutoGenerateColumns = false;
+
+                    var danhSach = db_ls.lichsunaptiens
+                                        .OrderByDescending(x => x.thoigiannap)
+                                        .ToList();
+
+                    dgvlichsunap.DataSource = null;
+                    dgvlichsunap.DataSource = danhSach;
+
+                    // Định dạng cột tiền cho đẹp (giống cách ku làm ở loadtaikhoan)
+                    if (dgvlichsunap.Columns["sotiennap"] != null)
+                        dgvlichsunap.Columns["sotiennap"].DefaultCellStyle.Format = "N0";
+
+                    if (dgvlichsunap.Columns["time"] != null)
+                        dgvlichsunap.Columns["time"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load lịch sử: " + ex.Message);
+            }
+        }
+
+        private void btntimkiemls_Click(object sender, EventArgs e)
+        {
+            using (AppDbContext db = new AppDbContext())
+            {
+                string tenCanTim = txtlichsu.Text.Trim().ToLower();
+
+                if (string.IsNullOrEmpty(tenCanTim))
+                {
+                    loadlichsu(); // Nếu trống thì hiện lại hết cho sạch
+                    return;
+                }
+
+                // Code ngắn gọn kiểu ku muốn đây:
+                List<lichsunaptien> ketQua = db.lichsunaptiens
+                    .Where(ls => ls.tendangnhap.ToLower().Contains(tenCanTim))
+                    .OrderByDescending(ls => ls.thoigiannap)
+                    .ToList();
+
+                dgvlichsunap.DataSource = ketQua;
+
+                if (ketQua.Count == 0) MessageBox.Show("Chả thấy lịch sử thằng này!");
+            }
+        }
+
+        private void dgvlichsunap_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            var rowIdx = (e.RowIndex + 1).ToString();
+
+            var centerFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
+        private void dgvmaytram_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            var rowIdx = (e.RowIndex + 1).ToString();
+
+            var centerFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
+        private void dgvtaikhoan_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            var rowIdx = (e.RowIndex + 1).ToString();
+
+            var centerFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
         }
     }
 }

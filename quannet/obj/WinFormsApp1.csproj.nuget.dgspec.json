@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ASUS\\Desktop\\lưu test btl winform\\WinFormsApp1\\WinFormsApp1.csproj": {}
+    "C:\\Users\\ASUS\\Desktop\\đồ ans1 + cnpm\\quannet\\WinFormsApp1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ASUS\\Desktop\\lưu test btl winform\\WinFormsApp1\\WinFormsApp1.csproj": {
+    "C:\\Users\\ASUS\\Desktop\\đồ ans1 + cnpm\\quannet\\WinFormsApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\lưu test btl winform\\WinFormsApp1\\WinFormsApp1.csproj",
+        "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\đồ ans1 + cnpm\\quannet\\WinFormsApp1.csproj",
         "projectName": "WinFormsApp1",
-        "projectPath": "C:\\Users\\ASUS\\Desktop\\lưu test btl winform\\WinFormsApp1\\WinFormsApp1.csproj",
+        "projectPath": "C:\\Users\\ASUS\\Desktop\\đồ ans1 + cnpm\\quannet\\WinFormsApp1.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ASUS\\Desktop\\lưu test btl winform\\WinFormsApp1\\obj\\",
+        "outputPath": "C:\\Users\\ASUS\\Desktop\\đồ ans1 + cnpm\\quannet\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
