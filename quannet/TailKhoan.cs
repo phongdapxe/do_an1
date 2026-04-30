@@ -1,9 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace WinFormsApp1
 {
     public class TaiKhoan
     {
+        [Key]
         public string tendangnhap { get; set; } = "";
         public string matkhau { get; set; } = "";
         public int sodu { get; set; }

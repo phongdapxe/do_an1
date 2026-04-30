@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             dgvmaytram = new DataGridView();
             somay = new DataGridViewTextBoxColumn();
@@ -49,6 +49,7 @@
             btnnaptien = new ToolStripButton();
             btntaotaikhoan = new ToolStripButton();
             btnlsnaptien = new ToolStripButton();
+            btnlstime = new ToolStripButton();
             btndichvu = new ToolStripButton();
             btnbaocao = new ToolStripButton();
             tabControl1 = new TabControl();
@@ -80,7 +81,21 @@
             colsotien = new DataGridViewTextBoxColumn();
             coldatetime = new DataGridViewTextBoxColumn();
             colghichu = new DataGridViewTextBoxColumn();
+            tabPage4 = new TabPage();
+            panel3 = new Panel();
+            txttimdsls = new TextBox();
+            label3 = new Label();
+            btntimls = new Button();
+            btldanhsachls = new Button();
+            dgvlstime = new DataGridView();
+            taikhoan = new DataGridViewTextBoxColumn();
+            somay1 = new DataGridViewTextBoxColumn();
+            batdau = new DataGridViewTextBoxColumn();
+            ketthuc = new DataGridViewTextBoxColumn();
+            thoigianchoi = new DataGridViewTextBoxColumn();
+            sotien = new DataGridViewTextBoxColumn();
             timertinhtien = new System.Windows.Forms.Timer(components);
+            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvmaytram).BeginInit();
             cmsMayTram.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -93,6 +108,9 @@
             tabPage3.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvlichsunap).BeginInit();
+            tabPage4.SuspendLayout();
+            panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvlstime).BeginInit();
             SuspendLayout();
             // 
             // dgvmaytram
@@ -105,9 +123,8 @@
             dgvmaytram.Dock = DockStyle.Fill;
             dgvmaytram.Location = new Point(3, 3);
             dgvmaytram.Name = "dgvmaytram";
-            dgvmaytram.Size = new Size(786, 407);
+            dgvmaytram.Size = new Size(820, 407);
             dgvmaytram.TabIndex = 2;
-            dgvmaytram.CellContentClick += dgvmaytram_CellContentClick;
             dgvmaytram.CellFormatting += dgvmaytram_CellFormatting;
             dgvmaytram.RowPostPaint += dgvmaytram_RowPostPaint;
             // 
@@ -151,8 +168,8 @@
             // thoigian
             // 
             thoigian.DataPropertyName = "batdauluc";
-            dataGridViewCellStyle1.Format = "HH:mm:ss";
-            thoigian.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Format = "HH:mm:ss";
+            thoigian.DefaultCellStyle = dataGridViewCellStyle2;
             thoigian.FillWeight = 57.4450035F;
             thoigian.HeaderText = "bắt đầu lúc ";
             thoigian.Name = "thoigian";
@@ -194,10 +211,10 @@
             // toolStrip1
             // 
             toolStrip1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btntrangchu, btntaikhoan, btnnaptien, btntaotaikhoan, btnlsnaptien, btndichvu, btnbaocao });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btntrangchu, btntaikhoan, btnnaptien, btntaotaikhoan, btnlsnaptien, btnlstime, btndichvu, btnbaocao });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(800, 28);
+            toolStrip1.Size = new Size(834, 28);
             toolStrip1.TabIndex = 19;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -251,6 +268,16 @@
             btnlsnaptien.Text = "Lịch sử thanh toán";
             btnlsnaptien.Click += tablsnaptien_Click;
             // 
+            // btnlstime
+            // 
+            btnlstime.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnlstime.Image = (Image)resources.GetObject("btnlstime.Image");
+            btnlstime.ImageTransparentColor = Color.Magenta;
+            btnlstime.Name = "btnlstime";
+            btnlstime.Size = new Size(130, 25);
+            btnlstime.Text = "lịch sử giờ chơi";
+            btnlstime.Click += btnlstime_Click;
+            // 
             // btndichvu
             // 
             btndichvu.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -259,6 +286,7 @@
             btndichvu.Name = "btndichvu";
             btndichvu.Size = new Size(72, 25);
             btndichvu.Text = "Dịch vụ";
+            btndichvu.Click += btndichvu_Click;
             // 
             // btnbaocao
             // 
@@ -268,6 +296,7 @@
             btnbaocao.Name = "btnbaocao";
             btnbaocao.Size = new Size(74, 25);
             btnbaocao.Text = "Báo cáo";
+            btnbaocao.Click += btnbaocao_Click;
             // 
             // tabControl1
             // 
@@ -275,12 +304,13 @@
             tabControl1.Controls.Add(tabpage1);
             tabControl1.Controls.Add(tabpage2);
             tabControl1.Controls.Add(tabPage3);
+            tabControl1.Controls.Add(tabPage4);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.ItemSize = new Size(0, 1);
             tabControl1.Location = new Point(0, 28);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(800, 422);
+            tabControl1.Size = new Size(834, 422);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 20;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -291,19 +321,20 @@
             tabpage1.Location = new Point(4, 5);
             tabpage1.Name = "tabpage1";
             tabpage1.Padding = new Padding(3);
-            tabpage1.Size = new Size(792, 413);
+            tabpage1.Size = new Size(826, 413);
             tabpage1.TabIndex = 0;
             tabpage1.Text = "Trang chủ";
             tabpage1.UseVisualStyleBackColor = true;
             // 
             // tabpage2
             // 
+            tabpage2.Controls.Add(label4);
             tabpage2.Controls.Add(dgvtaikhoan);
             tabpage2.Controls.Add(panel1);
             tabpage2.Location = new Point(4, 5);
             tabpage2.Name = "tabpage2";
             tabpage2.Padding = new Padding(3);
-            tabpage2.Size = new Size(792, 413);
+            tabpage2.Size = new Size(826, 413);
             tabpage2.TabIndex = 1;
             tabpage2.Text = "Tài khoản";
             tabpage2.UseVisualStyleBackColor = true;
@@ -318,7 +349,7 @@
             dgvtaikhoan.Dock = DockStyle.Fill;
             dgvtaikhoan.Location = new Point(3, 50);
             dgvtaikhoan.Name = "dgvtaikhoan";
-            dgvtaikhoan.Size = new Size(786, 360);
+            dgvtaikhoan.Size = new Size(820, 360);
             dgvtaikhoan.TabIndex = 0;
             dgvtaikhoan.RowPostPaint += dgvtaikhoan_RowPostPaint;
             // 
@@ -389,7 +420,7 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(786, 47);
+            panel1.Size = new Size(820, 47);
             panel1.TabIndex = 5;
             // 
             // txttimkiem
@@ -436,7 +467,7 @@
             tabPage3.Location = new Point(4, 5);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(792, 413);
+            tabPage3.Size = new Size(826, 413);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
             tabPage3.UseVisualStyleBackColor = true;
@@ -451,7 +482,7 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(3, 3);
             panel2.Name = "panel2";
-            panel2.Size = new Size(786, 50);
+            panel2.Size = new Size(820, 50);
             panel2.TabIndex = 1;
             // 
             // label2
@@ -488,6 +519,7 @@
             btndsls.TabIndex = 3;
             btndsls.Text = "danh sách";
             btndsls.UseVisualStyleBackColor = true;
+            btndsls.Click += btndsls_Click;
             // 
             // dgvlichsunap
             // 
@@ -497,37 +529,150 @@
             dgvlichsunap.Dock = DockStyle.Bottom;
             dgvlichsunap.Location = new Point(3, 55);
             dgvlichsunap.Name = "dgvlichsunap";
-            dgvlichsunap.Size = new Size(786, 355);
+            dgvlichsunap.Size = new Size(820, 355);
             dgvlichsunap.TabIndex = 0;
-            dgvlichsunap.RowPostPaint += dgvlichsunap_RowPostPaint;
             // 
             // coltendn
             // 
             coltendn.DataPropertyName = "tendangnhap";
             coltendn.HeaderText = "tên tài khoản";
             coltendn.Name = "coltendn";
-            coltendn.Width = 184;
+            coltendn.Width = 193;
             // 
             // colsotien
             // 
             colsotien.DataPropertyName = "sotiennap";
-            colsotien.HeaderText = "số tiền nạp";
+            colsotien.HeaderText = "số tiền thanh toán";
             colsotien.Name = "colsotien";
-            colsotien.Width = 184;
+            colsotien.Width = 193;
             // 
             // coldatetime
             // 
             coldatetime.DataPropertyName = "thoigiannap";
-            coldatetime.HeaderText = "thời gian nạp";
+            coldatetime.HeaderText = "thời gian thanh toán";
             coldatetime.Name = "coldatetime";
-            coldatetime.Width = 184;
+            coldatetime.Width = 193;
             // 
             // colghichu
             // 
             colghichu.DataPropertyName = "ghichu";
             colghichu.HeaderText = "ghi chú";
             colghichu.Name = "colghichu";
-            colghichu.Width = 191;
+            colghichu.Width = 198;
+            // 
+            // tabPage4
+            // 
+            tabPage4.Controls.Add(panel3);
+            tabPage4.Controls.Add(dgvlstime);
+            tabPage4.Location = new Point(4, 5);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Padding = new Padding(3);
+            tabPage4.Size = new Size(826, 413);
+            tabPage4.TabIndex = 3;
+            tabPage4.Text = "tabPage4";
+            tabPage4.UseVisualStyleBackColor = true;
+            tabPage4.Click += btnlstime_Click;
+            // 
+            // panel3
+            // 
+            panel3.BackColor = Color.Pink;
+            panel3.Controls.Add(txttimdsls);
+            panel3.Controls.Add(label3);
+            panel3.Controls.Add(btntimls);
+            panel3.Controls.Add(btldanhsachls);
+            panel3.Dock = DockStyle.Top;
+            panel3.Location = new Point(3, 3);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(820, 49);
+            panel3.TabIndex = 5;
+            // 
+            // txttimdsls
+            // 
+            txttimdsls.Location = new Point(82, 22);
+            txttimdsls.Name = "txttimdsls";
+            txttimdsls.Size = new Size(123, 23);
+            txttimdsls.TabIndex = 3;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(82, 4);
+            label3.Name = "label3";
+            label3.Size = new Size(54, 15);
+            label3.TabIndex = 4;
+            label3.Text = "tìm kiếm";
+            // 
+            // btntimls
+            // 
+            btntimls.Location = new Point(211, 23);
+            btntimls.Name = "btntimls";
+            btntimls.Size = new Size(75, 23);
+            btntimls.TabIndex = 1;
+            btntimls.Text = "tìm";
+            btntimls.UseVisualStyleBackColor = true;
+            btntimls.Click += btntimls_Click;
+            // 
+            // btldanhsachls
+            // 
+            btldanhsachls.Location = new Point(1, 22);
+            btldanhsachls.Name = "btldanhsachls";
+            btldanhsachls.Size = new Size(75, 23);
+            btldanhsachls.TabIndex = 2;
+            btldanhsachls.Text = "danh sách";
+            btldanhsachls.UseVisualStyleBackColor = true;
+            btldanhsachls.Click += btldanhsachls_Click;
+            // 
+            // dgvlstime
+            // 
+            dgvlstime.BackgroundColor = Color.Pink;
+            dgvlstime.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvlstime.Columns.AddRange(new DataGridViewColumn[] { taikhoan, somay1, batdau, ketthuc, thoigianchoi, sotien });
+            dgvlstime.Dock = DockStyle.Bottom;
+            dgvlstime.Location = new Point(3, 54);
+            dgvlstime.Name = "dgvlstime";
+            dgvlstime.Size = new Size(820, 356);
+            dgvlstime.TabIndex = 0;
+            // 
+            // taikhoan
+            // 
+            taikhoan.DataPropertyName = "tendangnhap";
+            taikhoan.HeaderText = "tài khoản";
+            taikhoan.Name = "taikhoan";
+            taikhoan.Width = 121;
+            // 
+            // somay1
+            // 
+            somay1.DataPropertyName = "somay";
+            somay1.HeaderText = "số máy";
+            somay1.Name = "somay1";
+            somay1.Width = 68;
+            // 
+            // batdau
+            // 
+            batdau.DataPropertyName = "batdauluc";
+            batdau.HeaderText = "bắt đầu";
+            batdau.Name = "batdau";
+            batdau.Width = 179;
+            // 
+            // ketthuc
+            // 
+            ketthuc.DataPropertyName = "ketthuc";
+            ketthuc.HeaderText = "kết thúc";
+            ketthuc.Name = "ketthuc";
+            ketthuc.Width = 179;
+            // 
+            // thoigianchoi
+            // 
+            thoigianchoi.DataPropertyName = "thoigianchoi";
+            thoigianchoi.HeaderText = "thời gian chơi";
+            thoigianchoi.Name = "thoigianchoi";
+            thoigianchoi.Width = 130;
+            // 
+            // sotien
+            // 
+            sotien.DataPropertyName = "sotienchu";
+            sotien.HeaderText = "số tiền";
+            sotien.Name = "sotien";
             // 
             // timertinhtien
             // 
@@ -535,12 +680,22 @@
             timertinhtien.Interval = 60000;
             timertinhtien.Tick += timertinhtien_Tick;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(119, 305);
+            label4.Name = "label4";
+            label4.Size = new Size(539, 21);
+            label4.TabIndex = 6;
+            label4.Text = "cần phải sửa lại form tạo tài khoản khi nhấp số tiền nạp là -100 vẫn tạo được";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Pink;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(834, 450);
             Controls.Add(tabControl1);
             Controls.Add(toolStrip1);
             Name = "Form1";
@@ -553,6 +708,7 @@
             tabControl1.ResumeLayout(false);
             tabpage1.ResumeLayout(false);
             tabpage2.ResumeLayout(false);
+            tabpage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvtaikhoan).EndInit();
             cmstaikhoan.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -561,6 +717,10 @@
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvlichsunap).EndInit();
+            tabPage4.ResumeLayout(false);
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvlstime).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -612,9 +772,24 @@
         private TextBox txtlichsu;
         private Button btntimkiemls;
         private Button btndsls;
+        private ToolStripButton btnlstime;
+        private TabPage tabPage4;
+        private Label label3;
+        private TextBox txttimdsls;
+        private Button btldanhsachls;
+        private Button btntimls;
+        private DataGridView dgvlstime;
+        private Panel panel3;
         private DataGridViewTextBoxColumn coltendn;
         private DataGridViewTextBoxColumn colsotien;
         private DataGridViewTextBoxColumn coldatetime;
         private DataGridViewTextBoxColumn colghichu;
+        private DataGridViewTextBoxColumn taikhoan;
+        private DataGridViewTextBoxColumn somay1;
+        private DataGridViewTextBoxColumn batdau;
+        private DataGridViewTextBoxColumn ketthuc;
+        private DataGridViewTextBoxColumn thoigianchoi;
+        private DataGridViewTextBoxColumn sotien;
+        private Label label4;
     }
 }

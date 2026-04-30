@@ -18,6 +18,34 @@ namespace WinFormsApp1
         {
             loaddata();
             loadtaikhoan();
+
+            txttimkiem.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnsearch_Click(s, e);
+                    //tắt âm thanh như kiểu báo lỗi 
+                    e.SuppressKeyPress = true;
+                }
+            };
+
+            txtlichsu.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btntimkiemls_Click(s, e);
+                    e.SuppressKeyPress = true;
+                }
+            };
+
+            txttimdsls.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btntimls_Click(s, e);
+                    e.SuppressKeyPress = true;
+                }
+            };
         }
 
         // Hàm này chỉ để load dữ liệu lên các bảng
@@ -204,7 +232,6 @@ namespace WinFormsApp1
         private void đăngXuấtTắtMáyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (dgvmaytram.CurrentRow == null || dgvmaytram.CurrentRow.Cells["somay"].Value == null) return;
-
             string soMay = dgvmaytram.CurrentRow.Cells["somay"].Value.ToString();
             string trangThai = dgvmaytram.CurrentRow.Cells["trangthai"].Value.ToString();
 
@@ -214,7 +241,7 @@ namespace WinFormsApp1
                 return;
             }
 
-            if (MessageBox.Show($"Xác nhận cho khách máy {soMay}nghỉ?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show($"Xác nhận cho khách máy {soMay} nghỉ?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 using (AppDbContext db_out = new AppDbContext())
                 {
@@ -227,16 +254,32 @@ namespace WinFormsApp1
 
                         if (tk != null)
                         {
+                            // Tính thời gian và tiền đã chơi
+                            DateTime batDau = tk.batdauluc ?? DateTime.Now;
+                            DateTime ketThuc = DateTime.Now;
+                            TimeSpan span = ketThuc - batDau;
+                            string thoiGianChoi = string.Format("{0:00}:{1:00}", (int)span.TotalHours, span.Minutes);
+                            int sotienchu = (int)(span.TotalMinutes * (10000.0 / 60.0));
+
+                            // Lưu lịch sử giờ chơi
+                            lichsugiochoi ls = new lichsugiochoi();
+                            ls.tendangnhap = tk.tendangnhap;
+                            ls.somay = soMay.Trim();
+                            ls.batdauluc = batDau;
+                            ls.ketthuc = ketThuc;
+                            ls.thoigianchoi = thoiGianChoi;
+                            ls.sotienchu = sotienchu;
+                            db_out.lichsugiochois.Add(ls);
+
+                            // Reset taikhoan như cũ
                             tk.somay = null;
                             tk.batdauluc = null;
                         }
 
                         db_out.SaveChanges();
-
                         loaddata();
                         loadtaikhoan();
-
-                        MessageBox.Show($"Máy {soMay}đã đăng xuất. Tiền đã được hệ thống tự động cập nhật xong!");
+                        MessageBox.Show($"Máy {soMay} đã đăng xuất. Tiền đã được hệ thống tự động cập nhật xong!");
                     }
                 }
             }
@@ -334,6 +377,10 @@ namespace WinFormsApp1
             {
                 loadlichsu();
             }
+            else if (tabControl1.SelectedIndex == 3) // hoặc số index tabpage giờ chơi
+            {
+                loadlstime();
+            }
         }
 
         private void đổiMậtKhẩuToolStripMenuItem_Click(object sender, EventArgs e)
@@ -428,12 +475,6 @@ namespace WinFormsApp1
             }
         }
 
-        private void dgvmaytram_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        // sự kiên click vào tab lịch sử ra tabpage3 
         private void tablsnaptien_Click(object sender, EventArgs e)
         {
             tabControl1.SelectedIndex = 2;
@@ -537,6 +578,96 @@ namespace WinFormsApp1
 
             var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
             e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
+        private void btndsls_Click(object sender, EventArgs e)
+        {
+            txtlichsu.Text = "";
+            loadlichsu();
+        }
+
+        private void btndichvu_Click(object sender, EventArgs e)
+        {
+            dichvu fdv = new dichvu();
+
+            if (fdv.ShowDialog() == DialogResult.OK)
+            {
+                tabControl1.SelectedIndex = 1;
+
+            }
+
+        }
+
+        private void btnlstime_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 3;
+            loadlstime();
+
+        }
+
+        public void loadlstime()
+        {
+            try
+            {
+                using (AppDbContext db_ls = new AppDbContext())
+                {
+                    dgvlstime.AutoGenerateColumns = false;
+
+                    List<lichsugiochoi> danhSach = db_ls.lichsugiochois
+                        .OrderByDescending(x => x.ketthuc)
+                        .ToList();
+
+                    dgvlstime.DataSource = null;
+                    dgvlstime.DataSource = danhSach;
+
+                    if (dgvlstime.Columns["cotSoTien"] != null)
+                        dgvlstime.Columns["cotSoTien"].DefaultCellStyle.Format = "N0";
+                    if (dgvlstime.Columns["cotBatDau"] != null)
+                        dgvlstime.Columns["cotBatDau"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                    if (dgvlstime.Columns["cotKetThuc"] != null)
+                        dgvlstime.Columns["cotKetThuc"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
+        }
+
+        private void btntimls_Click(object sender, EventArgs e)
+        {
+            using (AppDbContext db = new AppDbContext())
+            {
+                string lscantim = txttimdsls.Text.Trim().ToLower();
+                if (string.IsNullOrEmpty(lscantim))
+                {
+                    loadlstime();
+                    return;
+                }
+                List<lichsugiochoi> ketQua = db.lichsugiochois
+                    .Where(lsgc => lsgc.tendangnhap.ToLower().Contains(lscantim))
+                    .OrderByDescending(lsgc => lsgc.ketthuc)
+                    .ToList();
+                dgvlstime.DataSource = ketQua;
+                if (ketQua.Count == 0) MessageBox.Show("Chả thấy lịch sử thằng này!");
+            }
+            txttimdsls.Clear();
+        }
+
+        private void btldanhsachls_Click(object sender, EventArgs e)
+        {
+            loadlstime();
+        }
+
+        private void btnbaocao_Click(object sender, EventArgs e)
+        {
+            frmbaocao fbc = new frmbaocao();
+
+            if (fbc.ShowDialog() == DialogResult.OK)
+            {
+                tabControl1.SelectedIndex = 1;
+
+            }
         }
     }
 }

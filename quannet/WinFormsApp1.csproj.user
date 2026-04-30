@@ -16,13 +16,22 @@
     <Compile Update="formmomay.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="frmbaocao.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="frmdoimk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="frmketquabaocao.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="frmNapTien.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="frmTaoTK.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="xacnhanorder.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

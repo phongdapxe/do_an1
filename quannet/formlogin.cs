@@ -24,7 +24,7 @@ namespace WinFormsApp1
             if (tkadminnhap == tkadmin && mkadminnhap == mkadmin)
             {
                 MessageBox.Show("Đăng nhập thành công!");
-
+                MessageBox.Show("Chào mừng nhà quản lý đăng nhập");
 
                 Form1 f1 = new Form1();
                 this.Hide();

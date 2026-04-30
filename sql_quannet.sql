@@ -37,7 +37,7 @@ begin
 	end
 end;
 
-
+select * from ttMayTram
 select * from taikhoan
 
 select a.somay, a.tenmay, a.trangthai, b.tendangnhap
@@ -47,20 +47,11 @@ left join taikhoan as b on a.somay = b.somay
 
 ALTER TABLE taikhoan ADD somay nchar(10);
 GO
-
--- Thêm cột lưu giờ bắt đầu vào bảng tài khoản
 ALTER TABLE taikhoan ADD batdauluc DATETIME;
 GO
 
-select * from ttMayTram
-select * from taikhoan
 
 SELECT tendangnhap, batdauluc FROM taikhoan;
-
-update taikhoan set sodu = 0;
-update taikhoan set	tongtiendung = 0;
-UPDATE taikhoan SET tongtiennap = 0 WHERE tongtiennap IS NULL;
-UPDATE taikhoan SET tongtiendung = 0 WHERE tongtiendung IS NULL;
 
 
 INSERT INTO ttMayTram (somay, tenmay, trangthai)
@@ -76,13 +67,12 @@ create table menudichvu (
 	id int IDENTITY(1,1) PRIMARY KEY,
 	tenmon nvarchar(50) not null,
 	dongia int not null default 0,
-	loai nvarchar(20) not null,
-	constraint chk_loai check(loai in (N'nước', N'đồ ăn'))
+	soluong int not null default 0
 );
 
+alter table menudichvu add hinhanh nvarchar(100);
 
--- insert thêm món tạm thời vào đây
-
+select * from menudichvu
 
 create table lichsugoimon(
 	id int identity(1,1) primary key,
@@ -91,9 +81,11 @@ create table lichsugoimon(
 	dongia int not null default 0,
 	tongtien int not null default 0,
 	thoigian datetime not null default getdate(),
-	somay nchar(10) null,
 	tendangnhap nvarchar(50) null
 );
+
+drop table lichsugoimon
+drop table menudichvu
 
 
 create table lichsunaptien(
@@ -109,15 +101,29 @@ create table lichsunaptien(
 select * from lichsunaptien
 
 
--- reset trắng thông tin số dư tài khoản
-UPDATE taikhoan
-SET sodu = 0,
-    tongtiennap = 0,
-    tongtiendung = 0;
+select * from menudichvu
 
--- 2. Nếu ku muốn xóa luôn cả lịch sử nạp tiền để đồng bộ dữ liệu
--- Lưu ý: Lệnh TRUNCATE sẽ xóa sạch toàn bộ dòng trong bảng và reset ID tự tăng về 1
-TRUNCATE TABLE lichsunaptien;
+INSERT INTO menudichvu (tenmon, dongia, soluong, hinhanh)
+VALUES 
+(N'Combo Burger + coca', 55000, 100, 'comboberger+coca.jpg'),
+(N'Pepsi', 15000, 100, 'pepsi.jpg'),
+(N'Sting đỏ', 15000, 100, 'siting.jpg'),
+(N'Sprite', 15000, 100, 'spaite.jpg'),
+(N'Bánh mì', 15000, 30, 'anhbanhmyyoung.jpg'),
+(N'Mì tôm', 20000, 100, 'mytom.jpg'),
+(N'Bánh mì xúc xích', 25000, 30, 'banhmyxuccich.jpg'),
+(N'Bia', 20000, 50, 'bia.jpg'),
+(N'Coca', 15000, 50, 'coca.jpg');
 
--- 3. Nếu muốn xóa luôn cả lịch sử gọi món (dịch vụ)
-TRUNCATE TABLE lichsugoimon;
+
+CREATE TABLE lichsugiochoi (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    tendangnhap NVARCHAR(50) NOT NULL,
+    somay NCHAR(10) NOT NULL,
+    batdauluc DATETIME NOT NULL,
+    ketthuc DATETIME NOT NULL,
+    thoigianchoi NVARCHAR(50),
+    sotienchu INT NOT NULL DEFAULT 0,
+    CONSTRAINT fk_lichsugiochoi_taikhoan FOREIGN KEY (tendangnhap)
+        REFERENCES taikhoan(tendangnhap)
+);
