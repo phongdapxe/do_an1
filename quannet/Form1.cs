@@ -12,12 +12,34 @@ namespace WinFormsApp1
         public Form1()
         {
             InitializeComponent();
+
+        }
+
+        void ApplyQuyen()
+        {
+            if (!SessionInfo.IsAdmin())
+            {
+                // Tab tài khoản: chặn xóa và đổi mật khẩu
+                xóaTàiKhoảnToolStripMenuItem.Click -= xóaTàiKhoảnToolStripMenuItem_Click;
+                xóaTàiKhoảnToolStripMenuItem.Click += (s, e) =>
+                    MessageBox.Show("Bạn không có quyền thực hiện chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                đổiMậtKhẩuToolStripMenuItem.Click -= đổiMậtKhẩuToolStripMenuItem_Click;
+                đổiMậtKhẩuToolStripMenuItem.Click += (s, e) =>
+                    MessageBox.Show("Bạn không có quyền thực hiện chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                // Chặn tạo tài khoản
+                btntaotaikhoan.Click -= btntaotaikhoan_Click;
+                btntaotaikhoan.Click += (s, e) =>
+                    MessageBox.Show("Bạn không có quyền thực hiện chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             loaddata();
             loadtaikhoan();
+            ApplyQuyen();
 
             txttimkiem.KeyDown += (s, e) =>
             {
@@ -37,6 +59,7 @@ namespace WinFormsApp1
                     e.SuppressKeyPress = true;
                 }
             };
+
 
             txttimdsls.KeyDown += (s, e) =>
             {

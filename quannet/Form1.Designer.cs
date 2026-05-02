@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             dgvmaytram = new DataGridView();
             somay = new DataGridViewTextBoxColumn();
@@ -95,7 +95,6 @@
             thoigianchoi = new DataGridViewTextBoxColumn();
             sotien = new DataGridViewTextBoxColumn();
             timertinhtien = new System.Windows.Forms.Timer(components);
-            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvmaytram).BeginInit();
             cmsMayTram.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -168,8 +167,8 @@
             // thoigian
             // 
             thoigian.DataPropertyName = "batdauluc";
-            dataGridViewCellStyle2.Format = "HH:mm:ss";
-            thoigian.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Format = "HH:mm:ss";
+            thoigian.DefaultCellStyle = dataGridViewCellStyle1;
             thoigian.FillWeight = 57.4450035F;
             thoigian.HeaderText = "bắt đầu lúc ";
             thoigian.Name = "thoigian";
@@ -328,7 +327,6 @@
             // 
             // tabpage2
             // 
-            tabpage2.Controls.Add(label4);
             tabpage2.Controls.Add(dgvtaikhoan);
             tabpage2.Controls.Add(panel1);
             tabpage2.Location = new Point(4, 5);
@@ -680,16 +678,6 @@
             timertinhtien.Interval = 60000;
             timertinhtien.Tick += timertinhtien_Tick;
             // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(119, 305);
-            label4.Name = "label4";
-            label4.Size = new Size(539, 21);
-            label4.TabIndex = 6;
-            label4.Text = "cần phải sửa lại form tạo tài khoản khi nhấp số tiền nạp là -100 vẫn tạo được";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -708,7 +696,6 @@
             tabControl1.ResumeLayout(false);
             tabpage1.ResumeLayout(false);
             tabpage2.ResumeLayout(false);
-            tabpage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvtaikhoan).EndInit();
             cmstaikhoan.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -790,6 +777,5 @@
         private DataGridViewTextBoxColumn ketthuc;
         private DataGridViewTextBoxColumn thoigianchoi;
         private DataGridViewTextBoxColumn sotien;
-        private Label label4;
     }
 }

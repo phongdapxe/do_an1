@@ -42,7 +42,11 @@ namespace WinFormsApp1
 
                     // Xử lý tiền nạp đầu
                     int tien = 0;
-                    int.TryParse(txtsotientaotk.Text, out tien);
+                    if (!int.TryParse(txtsotientaotk.Text, out tien) || tien < 0)
+                    {
+                        MessageBox.Show("Số tiền nạp tối thiểu phải > 0!");
+                        return;
+                    }
                     tk_moi.sodu = tien;
                     tk_moi.tongtiennap = tien; // Nạp đầu tính luôn vào tổng nạp
                     tk_moi.tongtiendung = 0;

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace WinFormsApp1
@@ -19,44 +14,47 @@ namespace WinFormsApp1
         {
             try
             {
-                // 1. Kiểm tra xem tiền nhập vào có phải là số không
                 if (!int.TryParse(txtsotien.Text, out int tienNap))
                 {
-                    MessageBox.Show("Vui lòng nhập số tiền hợp lệ ku ơi!");
+                    MessageBox.Show("Vui lòng nhập số tiền hợp lệ!");
+                    return;
+                }
+
+                // Kiểm tra quyền nhân viên không được nạp tiền âm hoặc = 0
+                if (!SessionInfo.IsAdmin() && tienNap <= 0)
+                {
+                    MessageBox.Show("Bạn không có quyền thực hiện chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 using (AppDbContext db = new AppDbContext())
                 {
                     string ten = txttendn.Text.Trim();
-
-                    // 2. Tìm tài khoản trong DB
                     TaiKhoan tk = db.taikhoans.Find(ten);
-
                     if (tk != null)
                     {
-                        // 3. Thực hiện cộng tiền vào bảng tài khoản
                         tk.sodu += tienNap;
                         tk.tongtiennap += tienNap;
 
-                        // --- ĐOẠN MỚI THÊM: LƯU VÀO LỊCH SỬ NẠP TIỀN ---
                         lichsunaptien ls = new lichsunaptien();
                         ls.tendangnhap = ten;
                         ls.sotiennap = tienNap;
                         ls.thoigiannap = DateTime.Now;
-                        ls.ghichu = "Nạp tiền tại quầy"; // Ku có thể thay bằng txtghichu.Text nếu có ô nhập
-
+                        ls.ghichu = "Nạp tiền tại quầy";
                         db.lichsunaptiens.Add(ls);
-                        // ----------------------------------------------
 
-                        // 4. Lưu tất cả thay đổi (cả tiền tài khoản và dòng lịch sử)
                         db.SaveChanges();
+                        if (tienNap > 0)
+                        {
+                            MessageBox.Show(string.Format("Đã nạp thành công {0:N0}đ cho tài khoản {1}", tienNap, ten));
 
-                        MessageBox.Show($"Đã nạp thành công {tienNap:N0}đ cho tài khoản {ten}");
-
-                        // 5. Báo cho Form1 biết là nạp thành công để load lại bảng
-                        this.DialogResult = DialogResult.OK;
-                        this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show(string.Format("Đã trừ thành công {0:N0}đ cho tài khoản {1}", -tienNap, ten));
+                            this.DialogResult = DialogResult.OK;
+                            this.Close();
+                        }
                     }
                     else
                     {

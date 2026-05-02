@@ -37,6 +37,17 @@ begin
 	end
 end;
 
+CREATE TABLE taikhoanquanly (
+    tendangnhap NVARCHAR(50) NOT NULL PRIMARY KEY,
+    matkhau NVARCHAR(50) NOT NULL,
+    vaitro NVARCHAR(20) NOT NULL
+);
+
+INSERT INTO taikhoanquanly (tendangnhap, matkhau, vaitro)
+VALUES ('admin', '1', 'admin');
+INSERT INTO taikhoanquanly (tendangnhap, matkhau, vaitro)
+VALUES ('nhanvien', '1', 'nhanvien');
+
 select * from ttMayTram
 select * from taikhoan
 
@@ -74,18 +85,7 @@ alter table menudichvu add hinhanh nvarchar(100);
 
 select * from menudichvu
 
-create table lichsugoimon(
-	id int identity(1,1) primary key,
-	tenmon nvarchar(100) not null,
-	soluong int not null default 1,
-	dongia int not null default 0,
-	tongtien int not null default 0,
-	thoigian datetime not null default getdate(),
-	tendangnhap nvarchar(50) null
-);
 
-drop table lichsugoimon
-drop table menudichvu
 
 
 create table lichsunaptien(
@@ -127,3 +127,20 @@ CREATE TABLE lichsugiochoi (
     CONSTRAINT fk_lichsugiochoi_taikhoan FOREIGN KEY (tendangnhap)
         REFERENCES taikhoan(tendangnhap)
 );
+-- ttMayTram -> lichsugiochoi
+ALTER TABLE lichsugiochoi
+ADD CONSTRAINT fk_lichsugiochoi_maytram 
+FOREIGN KEY (somay) REFERENCES ttMayTram(somay);
+
+-- ttMayTram -> taikhoan (somay trong taikhoan trỏ về ttMayTram)
+ALTER TABLE taikhoan
+ADD CONSTRAINT fk_taikhoan_maytram 
+FOREIGN KEY (somay) REFERENCES ttMayTram(somay);
+
+SELECT 
+    fk.name AS foreign_key,
+    tp.name AS parent_table,
+    tr.name AS referenced_table
+FROM sys.foreign_keys fk
+JOIN sys.tables tp ON fk.parent_object_id = tp.object_id
+JOIN sys.tables tr ON fk.referenced_object_id = tr.object_id;

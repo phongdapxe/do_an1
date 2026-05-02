@@ -67,6 +67,13 @@ namespace WinFormsApp1
         public string? thoigianchoi { get; set; }
         public int sotienchu { get; set; }
     }
+    public class TaiKhoanQuanLy
+    {
+        [Key]
+        public string tendangnhap { get; set; } = "";
+        public string matkhau { get; set; } = "";
+        public string vaitro { get; set; } = "";
+    }
 
     public class AppDbContext : DbContext
     {
@@ -74,6 +81,7 @@ namespace WinFormsApp1
         public DbSet<ttMayTram> ttMayTrams { get; set; }
         public DbSet<lichsunaptien> lichsunaptiens { get; set; }
         public DbSet<lichsugiochoi> lichsugiochois { get; set; }
+        public DbSet<TaiKhoanQuanLy> taikhoanquanlys { get; set; }
 
         // THÊM DÒNG NÀY VÀO ĐÂY KU ƠI!
         public DbSet<menudichvu> menudichvus { get; set; }
@@ -91,6 +99,7 @@ namespace WinFormsApp1
 
             modelBuilder.Entity<ttMayTram>().ToTable("ttMayTram");
             modelBuilder.Entity<lichsunaptien>().ToTable("lichsunaptien");
+            modelBuilder.Entity<TaiKhoanQuanLy>().ToTable("taikhoanquanly");
 
             modelBuilder.Entity<menudichvu>(entity =>
             {

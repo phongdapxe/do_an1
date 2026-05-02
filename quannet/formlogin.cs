@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace WinFormsApp1
@@ -14,33 +10,45 @@ namespace WinFormsApp1
         {
             InitializeComponent();
         }
-        string tkadmin = "admin";
-        string mkadmin = "1";
+
         private void btnlogin_Click(object sender, EventArgs e)
         {
-            string tkadminnhap = txtuser.Text;
-            string mkadminnhap = txtpass.Text;
+            string tenNhap = txtuser.Text.Trim();
+            string matKhauNhap = txtpass.Text.Trim();
 
-            if (tkadminnhap == tkadmin && mkadminnhap == mkadmin)
+            if (string.IsNullOrEmpty(tenNhap) || string.IsNullOrEmpty(matKhauNhap))
             {
-                MessageBox.Show("Đăng nhập thành công!");
-                MessageBox.Show("Chào mừng nhà quản lý đăng nhập");
+                MessageBox.Show("Vui lòng nhập đầy đủ tài khoản và mật khẩu!", "Thông báo");
+                return;
+            }
+
+            using (AppDbContext db = new AppDbContext())
+            {
+                TaiKhoanQuanLy tk = db.taikhoanquanlys.FirstOrDefault(x =>
+                    x.tendangnhap == tenNhap && x.matkhau == matKhauNhap);
+
+                if (tk == null)
+                {
+                    MessageBox.Show("Sai tài khoản hoặc mật khẩu!", "Thông báo");
+                    txtpass.Clear();
+                    txtuser.Clear();
+                    txtuser.Focus();
+                    return;
+                }
+
+                // Lưu session
+                SessionInfo.TenDangNhap = tk.tendangnhap;
+                SessionInfo.VaiTro = tk.vaitro ?? "nhanvien";
+
+                if (SessionInfo.IsAdmin())
+                    MessageBox.Show("Chào mừng nhà quản lý đăng nhập!", "Thông báo");
+                else
+                    MessageBox.Show("Chào mừng nhân viên đăng nhập", "Thông báo");
 
                 Form1 f1 = new Form1();
                 this.Hide();
-
                 f1.FormClosed += (s, args) => this.Close();
-
                 f1.Show();
-
-            }
-            else
-            {
-                MessageBox.Show("Sai tai khoan hoac mat khau");
-
-                txtpass.Clear();
-                txtuser.Clear();
-                txtuser.Focus();
             }
         }
     }
