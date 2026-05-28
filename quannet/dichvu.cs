@@ -77,11 +77,43 @@ namespace WinFormsApp1
 
                     Label lblName = new Label { Text = m.tenmon, Location = new Point(5, 120), AutoSize = true, Font = new Font(this.Font, FontStyle.Bold) };
 
-                    Label lblPrice = new Label { Text = m.dongia.ToString("N0") + "đ", Location = new Point(5, 140), ForeColor = Color.Red };
+                    Label lblPrice = new Label
+                    {
+                        Text = m.dongia.ToString("N0") + "đ",
+                        Location = new Point(5, 145),
+                        ForeColor = Color.Red
+                    };
 
-                    Button btnGiam = new Button { Text = "-", Size = new Size(35, 35), Location = new Point(5, 170) };
-                    Label lblQty = new Label { Text = "0", Size = new Size(45, 25), Location = new Point(40, 175), TextAlign = ContentAlignment.MiddleCenter, BorderStyle = BorderStyle.Fixed3D };
-                    Button btnTang = new Button { Text = "+", Size = new Size(35, 35), Location = new Point(85, 170) };
+                    Label lblSL = new Label
+                    {
+                        Text = "Kho: " + m.soluong,
+                        Location = new Point(5, 170),
+                        ForeColor = Color.DarkBlue,
+                        AutoSize = true,
+                        Font = new Font("Segoe UI", 8, FontStyle.Bold),
+                        BackColor = Color.Transparent
+                    };
+
+                    Button btnGiam = new Button
+                    {
+                        Text = "-",
+                        Size = new Size(35, 35),
+                        Location = new Point(5, 190)
+                    };
+                    Label lblQty = new Label
+                    {
+                        Text = "0",
+                        Size = new Size(45, 25),
+                        Location = new Point(40, 195),
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        BorderStyle = BorderStyle.Fixed3D
+                    };
+                    Button btnTang = new Button
+                    {
+                        Text = "+",
+                        Size = new Size(35, 35),
+                        Location = new Point(85, 190)
+                    };
 
                     btnTang.Click += (s, e) =>
                     {
@@ -104,6 +136,7 @@ namespace WinFormsApp1
                     p.Controls.Add(pic);
                     p.Controls.Add(lblName);
                     p.Controls.Add(lblPrice);
+                    p.Controls.Add(lblSL);
                     p.Controls.Add(btnGiam);
                     p.Controls.Add(lblQty);
                     p.Controls.Add(btnTang);

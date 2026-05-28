@@ -96,6 +96,16 @@ namespace WinFormsApp1
                             {
                                 may.tendangnhap = tk.tendangnhap ?? "";
                                 may.sodu = tk.sodu;
+
+                                if (tk.batdauluc != null)
+                                {
+                                    TimeSpan tg = DateTime.Now - tk.batdauluc.Value;
+
+                                    may.thoigianchoi = string.Format("{0:00}:{1:00}",
+                                        (int)tg.TotalHours,
+                                        tg.Minutes);
+                                }
+
                                 break;
                             }
                         }
@@ -273,6 +283,8 @@ namespace WinFormsApp1
                             ls.thoigianchoi = thoiGianChoi;
                             ls.sotienchu = sotienchu;
                             db_out.lichsugiochois.Add(ls);
+
+                            tk.tongtiendung += sotienchu;
 
                             tk.somay = null;
                             tk.batdauluc = null;

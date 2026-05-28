@@ -98,7 +98,6 @@
             thoigianchoi = new DataGridViewTextBoxColumn();
             sotien = new DataGridViewTextBoxColumn();
             timertinhtien = new System.Windows.Forms.Timer(components);
-            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvmaytram).BeginInit();
             cmsMayTram.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -123,9 +122,10 @@
             dgvmaytram.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvmaytram.Columns.AddRange(new DataGridViewColumn[] { somay, tenmay, trangthai, tendangnhap, sodu, thoigian, dasudung });
             dgvmaytram.ContextMenuStrip = cmsMayTram;
-            dgvmaytram.Location = new Point(3, 248);
+            dgvmaytram.Dock = DockStyle.Fill;
+            dgvmaytram.Location = new Point(3, 3);
             dgvmaytram.Name = "dgvmaytram";
-            dgvmaytram.Size = new Size(820, 162);
+            dgvmaytram.Size = new Size(820, 407);
             dgvmaytram.TabIndex = 2;
             dgvmaytram.CellFormatting += dgvmaytram_CellFormatting;
             dgvmaytram.RowPostPaint += dgvmaytram_RowPostPaint;
@@ -340,7 +340,6 @@
             // 
             // tabpage1
             // 
-            tabpage1.Controls.Add(label4);
             tabpage1.Controls.Add(dgvmaytram);
             tabpage1.Location = new Point(4, 5);
             tabpage1.Name = "tabpage1";
@@ -703,16 +702,6 @@
             timertinhtien.Interval = 60000;
             timertinhtien.Tick += timertinhtien_Tick;
             // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(20, 96);
-            label4.Name = "label4";
-            label4.Size = new Size(800, 30);
-            label4.TabIndex = 3;
-            label4.Text = "lỗi không hiển thị giờ đã sử dụng, thêm tính năng hiển thị số lượng các món tồn kho";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -730,7 +719,6 @@
             toolStrip1.PerformLayout();
             tabControl1.ResumeLayout(false);
             tabpage1.ResumeLayout(false);
-            tabpage1.PerformLayout();
             tabpage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvtaikhoan).EndInit();
             cmstaikhoan.ResumeLayout(false);
@@ -816,6 +804,5 @@
         private ToolStripMenuItem chinhsuamaytram;
         private ToolStripMenuItem themmaytram;
         private ToolStripMenuItem xoamaytram;
-        private Label label4;
     }
 }
