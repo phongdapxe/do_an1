@@ -5,14 +5,13 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.VisualBasic;
 
 namespace WinFormsApp1
 {
     public partial class dichvu : Form
     {
-        // Giỏ hàng lưu tên món → (số lượng, đơn giá)
         Dictionary<string, (int sl, int gia)> gioHang = new();
-        // Lưu tên file ảnh theo tên món
         Dictionary<string, string> gioHangAnh = new();
 
         public dichvu()
@@ -20,16 +19,22 @@ namespace WinFormsApp1
             InitializeComponent();
         }
 
-        // 1. Khi Form mở lên thì nạp ngay Menu món ăn
         private void dichvu_Load(object sender, EventArgs e)
         {
             loadMenu();
         }
 
-        // 2. Hàm đổ món ăn kèm ảnh lên vùng màu hồng (flpMenu)
         void loadMenu()
         {
             flpmenu.Controls.Clear();
+
+            // --- TẠO MENU CHUỘT PHẢI ---
+            ContextMenuStrip menuChuotPhai = new ContextMenuStrip();
+            ToolStripMenuItem itemSua = new ToolStripMenuItem("Sửa món này");
+            ToolStripMenuItem itemXoa = new ToolStripMenuItem("Xóa món này");
+
+            menuChuotPhai.Items.AddRange(new ToolStripItem[] { itemSua, itemXoa });
+
             using (AppDbContext db = new AppDbContext())
             {
                 string folderPath = Path.Combine(Application.StartupPath, "Images");
@@ -37,7 +42,16 @@ namespace WinFormsApp1
 
                 foreach (var m in dsMon)
                 {
-                    Panel p = new Panel { Size = new Size(170, 230), BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(10) };
+                    // 1. Tạo Panel bao ngoài
+                    Panel p = new Panel
+                    {
+                        Size = new Size(170, 230),
+                        BorderStyle = BorderStyle.FixedSingle,
+                        Margin = new Padding(10),
+                        Tag = m.tenmon 
+                    };
+
+                    p.ContextMenuStrip = menuChuotPhai;
 
                     PictureBox pic = new PictureBox { Size = new Size(160, 110), Location = new Point(5, 5), SizeMode = PictureBoxSizeMode.StretchImage };
 
@@ -62,13 +76,13 @@ namespace WinFormsApp1
                     }
 
                     Label lblName = new Label { Text = m.tenmon, Location = new Point(5, 120), AutoSize = true, Font = new Font(this.Font, FontStyle.Bold) };
+
                     Label lblPrice = new Label { Text = m.dongia.ToString("N0") + "đ", Location = new Point(5, 140), ForeColor = Color.Red };
 
                     Button btnGiam = new Button { Text = "-", Size = new Size(35, 35), Location = new Point(5, 170) };
                     Label lblQty = new Label { Text = "0", Size = new Size(45, 25), Location = new Point(40, 175), TextAlign = ContentAlignment.MiddleCenter, BorderStyle = BorderStyle.Fixed3D };
                     Button btnTang = new Button { Text = "+", Size = new Size(35, 35), Location = new Point(85, 170) };
 
-                    // Sự kiện nút +
                     btnTang.Click += (s, e) =>
                     {
                         int q = int.Parse(lblQty.Text) + 1;
@@ -76,7 +90,6 @@ namespace WinFormsApp1
                         CapNhatGioHang(m.tenmon, q, m.dongia, m.hinhanh);
                     };
 
-                    // Sự kiện nút -
                     btnGiam.Click += (s, e) =>
                     {
                         int q = int.Parse(lblQty.Text);
@@ -88,14 +101,104 @@ namespace WinFormsApp1
                         }
                     };
 
-                    p.Controls.Add(pic); p.Controls.Add(lblName); p.Controls.Add(lblPrice);
-                    p.Controls.Add(btnGiam); p.Controls.Add(lblQty); p.Controls.Add(btnTang);
+                    p.Controls.Add(pic);
+                    p.Controls.Add(lblName);
+                    p.Controls.Add(lblPrice);
+                    p.Controls.Add(btnGiam);
+                    p.Controls.Add(lblQty);
+                    p.Controls.Add(btnTang);
+
                     flpmenu.Controls.Add(p);
                 }
             }
+
+
+            itemSua.Click += (s, e) =>
+            {
+                Control c = menuChuotPhai.SourceControl;
+                if (c != null && c.Tag != null)
+                {
+                    string tenMon = c.Tag.ToString();
+
+                    string inputGia = Interaction.InputBox($"Nhập giá mới cho món '{tenMon}':", "Sửa Giá", "0");
+
+                    if (string.IsNullOrEmpty(inputGia)) return;
+
+                    string inputSL = Interaction.InputBox($"Nhập số lượng tồn kho mới cho '{tenMon}':", "Sửa Số Lượng", "0");
+
+                    if (string.IsNullOrEmpty(inputSL)) return;
+
+                    // Cập nhật vào SQL
+                    try
+                    {
+                        int giaMoi = int.Parse(inputGia);
+                        int slMoi = int.Parse(inputSL);
+
+                        using (AppDbContext db = new AppDbContext())
+                        {
+                            menudichvu mon = db.menudichvus.FirstOrDefault(m => m.tenmon == tenMon);
+                            if (mon != null)
+                            {
+                                mon.dongia = giaMoi;
+                                mon.soluong = slMoi;
+                                db.SaveChanges();
+
+                                MessageBox.Show("Cập nhật thành công rồi ku!");
+                                loadMenu(); 
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ku nhập số sai định dạng rồi, kiểm tra lại đi!");
+                    }
+                }
+            };
+
+            itemXoa.Click += (s, e) =>
+            {
+                Control c = menuChuotPhai.SourceControl;
+                if (c != null && c.Tag != null)
+                {
+                    string tenMon = c.Tag.ToString();
+
+                    DialogResult result = MessageBox.Show($"Ku có chắc muốn xóa món '{tenMon}' không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            using (AppDbContext db = new AppDbContext())
+                            {
+                                menudichvu mon = db.menudichvus.FirstOrDefault(m => m.tenmon == tenMon);
+                                if (mon != null)
+                                {
+                                    if (!string.IsNullOrEmpty(mon.hinhanh))
+                                    {
+                                        string pathAnh = Path.Combine(Application.StartupPath, "Images", mon.hinhanh);
+                                        if (File.Exists(pathAnh))
+                                        {
+
+                                        }
+                                    }
+
+                                    db.menudichvus.Remove(mon);
+                                    db.SaveChanges();
+
+                                    MessageBox.Show($"Đã tiễn món '{tenMon}' lên đường thành công!");
+                                    loadMenu();
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Lỗi khi xóa: " + ex.Message);
+                        }
+                    }
+                }
+            };
         }
 
-        // 3. Cập nhật giỏ hàng và vẽ lại
         void CapNhatGioHang(string ten, int sl, int gia, string hinhanh)
         {
             if (sl == 0)
@@ -112,7 +215,6 @@ namespace WinFormsApp1
             TinhTongTien();
         }
 
-        // 4. Vẽ từng dòng order bên phải
         void VeGioHang()
         {
             List<Panel> toRemove = pnlOrder.Controls.OfType<Panel>().ToList();
@@ -211,7 +313,6 @@ namespace WinFormsApp1
             }
         }
 
-        // 5. Tính tổng tiền hiện lên Label
         void TinhTongTien()
         {
             int tong = gioHang.Sum(x => x.Value.sl * x.Value.gia);
@@ -239,7 +340,6 @@ namespace WinFormsApp1
                 return;
             }
 
-            // Kiểm tra số lượng tồn kho
             using (AppDbContext db = new AppDbContext())
             {
                 List<menudichvu> dsMon = db.menudichvus.ToList();
@@ -263,9 +363,19 @@ namespace WinFormsApp1
                 }
             }
 
-            // Tất cả hợp lệ mới mở form xác nhận
             xacnhanorder formXacNhan = new xacnhanorder(gioHang);
             formXacNhan.ShowDialog();
+        }
+
+        private void btnthemmon_Click(object sender, EventArgs e)
+        {
+            using (themmonmoi fThem = new themmonmoi())
+            {
+                if (fThem.ShowDialog() == DialogResult.OK)
+                {
+                    loadMenu();
+                }
+            }
         }
     }
 }

@@ -52,7 +52,20 @@ namespace WinFormsApp1
 
                 int tongTien = gioHang.Sum(x => x.Value.sl * x.Value.gia);
 
-                // Lưu vào lịch sử nạp tiền với ghi chú thanh toán dịch vụ
+                foreach (KeyValuePair<string, (int sl, int gia)> item in gioHang)
+                {
+                    string tenMonOrder = item.Key;
+                    int soLuongGiam = item.Value.sl;
+
+                    // Tìm món trong kho theo tên món
+                    menudichvu monTrongKho = db.menudichvus.FirstOrDefault(m => m.tenmon == tenMonOrder);
+                    if (monTrongKho != null)
+                    {
+                        monTrongKho.soluong -= soLuongGiam; // Trừ kho
+                    }
+                }
+
+                // Lưu vào lịch sử nạp tiền (giữ nguyên code của ku)
                 lichsunaptien ls = new lichsunaptien();
                 ls.tendangnhap = tenDangNhap;
                 ls.sotiennap = tongTien;
@@ -60,6 +73,8 @@ namespace WinFormsApp1
                 ls.ghichu = "Thanh toán dịch vụ ăn uống";
 
                 db.lichsunaptiens.Add(ls);
+
+                // Lưu toàn bộ thay đổi (bao gồm cả trừ kho và thêm lịch sử)
                 db.SaveChanges();
 
                 MessageBox.Show(
@@ -69,6 +84,12 @@ namespace WinFormsApp1
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
+
+                // Tín hiệu để Form dịch vụ biết mà load lại Menu
+                if (gioHang != null){
+                    gioHang.Clear();
+                }
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
         }

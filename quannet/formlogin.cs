@@ -36,7 +36,6 @@ namespace WinFormsApp1
                     return;
                 }
 
-                // Lưu session
                 SessionInfo.TenDangNhap = tk.tendangnhap;
                 SessionInfo.VaiTro = tk.vaitro ?? "nhanvien";
 

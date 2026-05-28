@@ -34,6 +34,7 @@
             button1 = new Button();
             pnlOrder = new Panel();
             label1 = new Label();
+            btnthemmon = new Button();
             SuspendLayout();
             // 
             // flpmenu
@@ -70,12 +71,13 @@
             // button1
             // 
             button1.Anchor = AnchorStyles.None;
-            button1.Location = new Point(575, 406);
+            button1.BackColor = Color.MediumSeaGreen;
+            button1.Location = new Point(674, 406);
             button1.Name = "button1";
-            button1.Size = new Size(225, 44);
+            button1.Size = new Size(126, 44);
             button1.TabIndex = 2;
             button1.Text = "gọi món";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // pnlOrder
@@ -98,11 +100,23 @@
             label1.TabIndex = 4;
             label1.Text = "tổng tiền:";
             // 
+            // btnthemmon
+            // 
+            btnthemmon.BackColor = Color.MediumSeaGreen;
+            btnthemmon.Location = new Point(581, 406);
+            btnthemmon.Name = "btnthemmon";
+            btnthemmon.Size = new Size(95, 44);
+            btnthemmon.TabIndex = 5;
+            btnthemmon.Text = "thêm món";
+            btnthemmon.UseVisualStyleBackColor = false;
+            btnthemmon.Click += btnthemmon_Click;
+            // 
             // dichvu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnthemmon);
             Controls.Add(lbldanhsach);
             Controls.Add(label1);
             Controls.Add(pnlOrder);
@@ -124,5 +138,6 @@
         private Panel pnlOrder;
         private Label lblTongTien;
         private Label label1;
+        private Button btnthemmon;
     }
 }

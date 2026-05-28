@@ -19,7 +19,6 @@ namespace WinFormsApp1
         {
             if (!SessionInfo.IsAdmin())
             {
-                // Tab tài khoản: chặn xóa và đổi mật khẩu
                 xóaTàiKhoảnToolStripMenuItem.Click -= xóaTàiKhoảnToolStripMenuItem_Click;
                 xóaTàiKhoảnToolStripMenuItem.Click += (s, e) =>
                     MessageBox.Show("Bạn không có quyền thực hiện chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -28,10 +27,13 @@ namespace WinFormsApp1
                 đổiMậtKhẩuToolStripMenuItem.Click += (s, e) =>
                     MessageBox.Show("Bạn không có quyền thực hiện chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                // Chặn tạo tài khoản
                 btntaotaikhoan.Click -= btntaotaikhoan_Click;
                 btntaotaikhoan.Click += (s, e) =>
                     MessageBox.Show("Bạn không có quyền thực hiện chức năng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                chinhsuamaytram.Visible = false;
+                themmaytram.Visible = false;
+                xoamaytram.Visible = false;
             }
         }
 
@@ -46,7 +48,6 @@ namespace WinFormsApp1
                 if (e.KeyCode == Keys.Enter)
                 {
                     btnsearch_Click(s, e);
-                    //tắt âm thanh như kiểu báo lỗi 
                     e.SuppressKeyPress = true;
                 }
             };
@@ -70,16 +71,11 @@ namespace WinFormsApp1
                 }
             };
         }
-
-        // Hàm này chỉ để load dữ liệu lên các bảng
         void loaddata()
         {
             try
             {
-                // 1. DÒNG QUAN TRỌNG NHẤT: Khóa không cho bảng tự chế cột mới
                 dgvmaytram.AutoGenerateColumns = false;
-
-                // Tạo db mới để lấy dữ liệu tươi từ SQL (giống bên Tab 2)
                 using (AppDbContext db_fresh = new AppDbContext())
                 {
                     List<ttMayTram> danhSachMay = db_fresh.ttMayTrams.ToList();
@@ -87,9 +83,11 @@ namespace WinFormsApp1
 
                     foreach (ttMayTram may in danhSachMay)
                     {
+                        may.somay = (may.somay ?? "").ToString();
+                        may.tenmay = (may.tenmay ?? "Máy lỗi").ToString();
+
                         may.tendangnhap = "";
                         may.sodu = 0;
-                        may.batdauluc = null;
                         may.thoigianchoi = "00:00";
 
                         foreach (TaiKhoan tk in danhSachTK)
@@ -98,45 +96,32 @@ namespace WinFormsApp1
                             {
                                 may.tendangnhap = tk.tendangnhap ?? "";
                                 may.sodu = tk.sodu;
-                                may.batdauluc = tk.batdauluc;
-                                if (tk.batdauluc != null)
-                                {
-                                    TimeSpan span = DateTime.Now - tk.batdauluc.Value;
-                                    // Hiện định dạng HH:mm (ví dụ 00:15 là chơi được 15 phút)
-                                    may.thoigianchoi = string.Format("{0:00}:{1:00}", (int)span.TotalHours, span.Minutes);
-                                }
                                 break;
                             }
                         }
                     }
-
-                    // 2. Gán dữ liệu (Lúc này các cột sửa tay trong Design sẽ được giữ nguyên)
                     dgvmaytram.DataSource = null;
                     dgvmaytram.DataSource = danhSachMay;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi: " + ex.Message);
+                MessageBox.Show("Lỗi tại loaddata: " + ex.Message);
             }
         }
         void loadtaikhoan()
         {
             try
             {
-                // Tạo một kết nối mới tinh để "ép" nó lấy dữ liệu mới nhất từ SQL
                 using (AppDbContext db_moi = new AppDbContext())
                 {
                     dgvtaikhoan.AutoGenerateColumns = false;
 
-                    // Lấy dữ liệu mới nhất
                     List<TaiKhoan> danhSach = db_moi.taikhoans.ToList();
 
-                    // Reset bảng về null trước khi gán lại (chiêu này cực kỳ quan trọng)
                     dgvtaikhoan.DataSource = null;
                     dgvtaikhoan.DataSource = danhSach;
 
-                    // Định dạng tiền (Giữ nguyên các dòng cũ của )
                     if (dgvtaikhoan.Columns["cotsodu"] != null)
                         dgvtaikhoan.Columns["cotsodu"].DefaultCellStyle.Format = "N0";
                     if (dgvtaikhoan.Columns["tongnap"] != null)
@@ -174,7 +159,6 @@ namespace WinFormsApp1
             }
         }
 
-        // Nút Tạo tài khoản: Tương tự nạp tiền, mở form mới
         private void btnTaoTK_Click(object sender, EventArgs e)
         {
             frmTaoTK popup = new frmTaoTK();
@@ -212,13 +196,11 @@ namespace WinFormsApp1
                 return;
             }
 
-            // Gọi cái Form mở máy mới tạo
             formmomay fMo = new formmomay();
             if (fMo.ShowDialog() == DialogResult.OK)
             {
                 string soMay = dgvmaytram.CurrentRow.Cells["somay"].Value.ToString();
 
-                // Tìm đối tượng trong DB để cập nhật
                 TaiKhoan tk = db.taikhoans.Find(fMo.TenKhach);
                 ttMayTram may = db.ttMayTrams.Find(soMay);
 
@@ -277,14 +259,12 @@ namespace WinFormsApp1
 
                         if (tk != null)
                         {
-                            // Tính thời gian và tiền đã chơi
                             DateTime batDau = tk.batdauluc ?? DateTime.Now;
                             DateTime ketThuc = DateTime.Now;
                             TimeSpan span = ketThuc - batDau;
                             string thoiGianChoi = string.Format("{0:00}:{1:00}", (int)span.TotalHours, span.Minutes);
                             int sotienchu = (int)(span.TotalMinutes * (10000.0 / 60.0));
 
-                            // Lưu lịch sử giờ chơi
                             lichsugiochoi ls = new lichsugiochoi();
                             ls.tendangnhap = tk.tendangnhap;
                             ls.somay = soMay.Trim();
@@ -294,7 +274,6 @@ namespace WinFormsApp1
                             ls.sotienchu = sotienchu;
                             db_out.lichsugiochois.Add(ls);
 
-                            // Reset taikhoan như cũ
                             tk.somay = null;
                             tk.batdauluc = null;
                         }
@@ -400,7 +379,7 @@ namespace WinFormsApp1
             {
                 loadlichsu();
             }
-            else if (tabControl1.SelectedIndex == 3) // hoặc số index tabpage giờ chơi
+            else if (tabControl1.SelectedIndex == 3) 
             {
                 loadlstime();
             }
@@ -520,7 +499,6 @@ namespace WinFormsApp1
                     dgvlichsunap.DataSource = null;
                     dgvlichsunap.DataSource = danhSach;
 
-                    // Định dạng cột tiền cho đẹp (giống cách ku làm ở loadtaikhoan)
                     if (dgvlichsunap.Columns["sotiennap"] != null)
                         dgvlichsunap.Columns["sotiennap"].DefaultCellStyle.Format = "N0";
 
@@ -542,11 +520,10 @@ namespace WinFormsApp1
 
                 if (string.IsNullOrEmpty(tenCanTim))
                 {
-                    loadlichsu(); // Nếu trống thì hiện lại hết cho sạch
+                    loadlichsu(); 
                     return;
                 }
 
-                // Code ngắn gọn kiểu ku muốn đây:
                 List<lichsunaptien> ketQua = db.lichsunaptiens
                     .Where(ls => ls.tendangnhap.ToLower().Contains(tenCanTim))
                     .OrderByDescending(ls => ls.thoigiannap)
@@ -692,5 +669,73 @@ namespace WinFormsApp1
 
             }
         }
+
+        private void thêmMáyTrạmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (AppDbContext db_add = new AppDbContext())
+            {
+                var dsMay = db_add.ttMayTrams.ToList();
+                int maxSoMay = 0;
+
+                if (dsMay.Count > 0)
+                {
+                    maxSoMay = dsMay.Max(m => {
+                        string chiSo = new string(m.somay.Where(char.IsDigit).ToArray());
+                        int outNum;
+                        return int.TryParse(chiSo, out outNum) ? outNum : 0;
+                    });
+                }
+
+                int soMoi = maxSoMay + 1;
+
+                ttMayTram mayMoi = new ttMayTram();
+                mayMoi.somay = "M" + soMoi.ToString("D2");
+
+                mayMoi.tenmay = "Máy số " + soMoi;
+
+                mayMoi.trangthai = "Tắt";
+                mayMoi.tendangnhap = "";
+                mayMoi.thoigianchoi = "00:00";
+
+                db_add.ttMayTrams.Add(mayMoi);
+                db_add.SaveChanges();
+
+                loaddata();
+                MessageBox.Show($"Đã thêm {mayMoi.tenmay} thành công!");
+            }
+        }
+
+        private void xóaMáyTrạmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvmaytram.CurrentRow == null || dgvmaytram.CurrentRow.Cells["somay"].Value == null)
+            {
+                MessageBox.Show("Vui lòng chọn máy cần xóa!");
+                return;
+            }
+
+            string soMayCanXoa = dgvmaytram.CurrentRow.Cells["somay"].Value.ToString().Trim();
+
+            DialogResult result = MessageBox.Show($"bạn có chắc chắn muốn xóa máy {soMayCanXoa} không?", "Xác nhận", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                using (AppDbContext db_del = new AppDbContext())
+                {
+                    var mayXoa = db_del.ttMayTrams.FirstOrDefault(m => m.somay.Trim() == soMayCanXoa);
+
+                    if (mayXoa != null)
+                    {
+                        db_del.ttMayTrams.Remove(mayXoa);
+                        db_del.SaveChanges();
+
+                        loaddata();
+                        MessageBox.Show($"Đã xóa máy {soMayCanXoa} khỏi hệ thống!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không tìm thấy máy này trong cơ sở dữ liệu!");
+                    }
+                }
+            }
+        }
     }
-}
+}   

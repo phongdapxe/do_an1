@@ -153,3 +153,4 @@ C:\Users\ASUS\Desktop\đồ ans1 + cnpm\quannet\bin\Debug\net10.0-windows\Docume
 C:\Users\ASUS\Desktop\đồ ans1 + cnpm\quannet\bin\Debug\net10.0-windows\ExcelNumberFormat.dll
 C:\Users\ASUS\Desktop\đồ ans1 + cnpm\quannet\bin\Debug\net10.0-windows\RBush.dll
 C:\Users\ASUS\Desktop\đồ ans1 + cnpm\quannet\bin\Debug\net10.0-windows\SixLabors.Fonts.dll
+C:\Users\ASUS\Desktop\đồ ans1 + cnpm\quannet\obj\Debug\net10.0-windows\WinFormsApp1.themmonmoi.resources

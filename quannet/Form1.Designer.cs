@@ -43,6 +43,9 @@
             mởMáyĐăngNhậpToolStripMenuItem = new ToolStripMenuItem();
             đăngXuấtTắtMáyToolStripMenuItem = new ToolStripMenuItem();
             nạpTiềnToolStripMenuItem = new ToolStripMenuItem();
+            chinhsuamaytram = new ToolStripMenuItem();
+            themmaytram = new ToolStripMenuItem();
+            xoamaytram = new ToolStripMenuItem();
             toolStrip1 = new ToolStrip();
             btntrangchu = new ToolStripButton();
             btntaikhoan = new ToolStripButton();
@@ -95,6 +98,7 @@
             thoigianchoi = new DataGridViewTextBoxColumn();
             sotien = new DataGridViewTextBoxColumn();
             timertinhtien = new System.Windows.Forms.Timer(components);
+            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvmaytram).BeginInit();
             cmsMayTram.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -119,10 +123,9 @@
             dgvmaytram.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvmaytram.Columns.AddRange(new DataGridViewColumn[] { somay, tenmay, trangthai, tendangnhap, sodu, thoigian, dasudung });
             dgvmaytram.ContextMenuStrip = cmsMayTram;
-            dgvmaytram.Dock = DockStyle.Fill;
-            dgvmaytram.Location = new Point(3, 3);
+            dgvmaytram.Location = new Point(3, 248);
             dgvmaytram.Name = "dgvmaytram";
-            dgvmaytram.Size = new Size(820, 407);
+            dgvmaytram.Size = new Size(820, 162);
             dgvmaytram.TabIndex = 2;
             dgvmaytram.CellFormatting += dgvmaytram_CellFormatting;
             dgvmaytram.RowPostPaint += dgvmaytram_RowPostPaint;
@@ -182,9 +185,9 @@
             // 
             // cmsMayTram
             // 
-            cmsMayTram.Items.AddRange(new ToolStripItem[] { mởMáyĐăngNhậpToolStripMenuItem, đăngXuấtTắtMáyToolStripMenuItem, nạpTiềnToolStripMenuItem });
+            cmsMayTram.Items.AddRange(new ToolStripItem[] { mởMáyĐăngNhậpToolStripMenuItem, đăngXuấtTắtMáyToolStripMenuItem, nạpTiềnToolStripMenuItem, chinhsuamaytram });
             cmsMayTram.Name = "cmsMayTram";
-            cmsMayTram.Size = new Size(188, 70);
+            cmsMayTram.Size = new Size(188, 92);
             // 
             // mởMáyĐăngNhậpToolStripMenuItem
             // 
@@ -206,6 +209,27 @@
             nạpTiềnToolStripMenuItem.Size = new Size(187, 22);
             nạpTiềnToolStripMenuItem.Text = "Nạp Tiền";
             nạpTiềnToolStripMenuItem.Click += nạpTiềnToolStripMenuItem_Click;
+            // 
+            // chinhsuamaytram
+            // 
+            chinhsuamaytram.DropDownItems.AddRange(new ToolStripItem[] { themmaytram, xoamaytram });
+            chinhsuamaytram.Name = "chinhsuamaytram";
+            chinhsuamaytram.Size = new Size(187, 22);
+            chinhsuamaytram.Text = "chỉnh sửa";
+            // 
+            // themmaytram
+            // 
+            themmaytram.Name = "themmaytram";
+            themmaytram.Size = new Size(156, 22);
+            themmaytram.Text = "thêm máy trạm";
+            themmaytram.Click += thêmMáyTrạmToolStripMenuItem_Click;
+            // 
+            // xoamaytram
+            // 
+            xoamaytram.Name = "xoamaytram";
+            xoamaytram.Size = new Size(156, 22);
+            xoamaytram.Text = "xóa máy trạm";
+            xoamaytram.Click += xóaMáyTrạmToolStripMenuItem_Click;
             // 
             // toolStrip1
             // 
@@ -316,6 +340,7 @@
             // 
             // tabpage1
             // 
+            tabpage1.Controls.Add(label4);
             tabpage1.Controls.Add(dgvmaytram);
             tabpage1.Location = new Point(4, 5);
             tabpage1.Name = "tabpage1";
@@ -678,6 +703,16 @@
             timertinhtien.Interval = 60000;
             timertinhtien.Tick += timertinhtien_Tick;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(20, 96);
+            label4.Name = "label4";
+            label4.Size = new Size(800, 30);
+            label4.TabIndex = 3;
+            label4.Text = "lỗi không hiển thị giờ đã sử dụng, thêm tính năng hiển thị số lượng các món tồn kho";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -695,6 +730,7 @@
             toolStrip1.PerformLayout();
             tabControl1.ResumeLayout(false);
             tabpage1.ResumeLayout(false);
+            tabpage1.PerformLayout();
             tabpage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvtaikhoan).EndInit();
             cmstaikhoan.ResumeLayout(false);
@@ -777,5 +813,9 @@
         private DataGridViewTextBoxColumn ketthuc;
         private DataGridViewTextBoxColumn thoigianchoi;
         private DataGridViewTextBoxColumn sotien;
+        private ToolStripMenuItem chinhsuamaytram;
+        private ToolStripMenuItem themmaytram;
+        private ToolStripMenuItem xoamaytram;
+        private Label label4;
     }
 }
